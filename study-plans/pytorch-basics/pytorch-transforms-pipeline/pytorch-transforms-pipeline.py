@@ -1,0 +1,15 @@
+import torch
+
+class TransformPipeline:
+    """
+    Returns: float32 tensor of shape (C, H, W) from __call__
+    """
+
+    def __init__(self, mean, std):
+        self.mean = torch.tensor(mean, dtype = torch.float32).view(-1, 1, 1)
+        self.std = torch.tensor(std, dtype = torch.float32).view(-1, 1, 1)
+    def __call__(self, image):
+        image = ((image.permute(2, 0, 1).float() / 255) - self.mean) / self.std
+
+        return image
+        
